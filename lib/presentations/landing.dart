@@ -17,6 +17,13 @@ class _LandingState extends State<Landing> {
         padding: EdgeInsets.all(20),
         child: TaskList(),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/addTask');
+          },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blueAccent,
+      ),
     );
   }
 }
