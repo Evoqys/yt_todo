@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:yt_todo/enums/task_status.dart';
+import 'package:yt_todo/utilities/enum_utilities.dart';
 
 class Task {
   String id;
@@ -19,7 +20,7 @@ class Task {
     this.id = map['id'];
     this.title = map['title'];
     this.description = map['description'];
-    this.status = map['status'];
+    this.status = enumValueFromString<TaskStatus>(map['status'].toString(), TaskStatus.values);
   }
 }
 

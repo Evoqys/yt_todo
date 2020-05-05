@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yt_todo/locator.dart';
 import 'package:yt_todo/models/task_model.dart';
+import 'package:yt_todo/services/task_service.dart';
+import 'package:yt_todo/utilities/enum_utilities.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
@@ -17,21 +20,37 @@ class TaskCard extends StatelessWidget {
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[Text(task.title), Text(task.status.toString())],
+            children: <Widget>[
+              Text(task.title),
+              Text(enumValueToString(task.status)),
+              IconButton(
+                icon: Icon(Icons.edit, color: Colors.blue,),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/addTask', arguments: this.task);
+                },
+
+              )
+            ],
           ),
           SizedBox(height: 15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(task.description),
-              Icon(
-                Icons.delete,
-                color: Colors.red,
+              IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                onPressed: _deleteTask,
               )
             ],
           )
         ],
       ),
     );
+  }
+  _deleteTask() {
+    locator<TaskService>().deleteTask(this.task.id);
   }
 }

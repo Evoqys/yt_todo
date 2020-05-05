@@ -18,5 +18,14 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  updateTask(Task task) {
+    int index = _tasks.indexWhere((t) => t.id == task.id);
+    _tasks.replaceRange(index, index+1, [task]);
+    notifyListeners();
+  }
 
+  deleteTask(String id) {
+    _tasks.removeWhere((v) => v.id == id);
+    notifyListeners();
+  }
 }
