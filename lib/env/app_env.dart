@@ -7,13 +7,13 @@ abstract class AppEnvironment {
       case Environment.dev:
         {
           headerKey = 'Authorization';
-          baseApiUrl = 'https://api-todo-flutter.herokuapp.com/';
+          baseApiUrl = 'https://api-todo-flutter.herokuapp.com';
 
           break;
         }
       case Environment.prod: {
         headerKey = 'Authorization';
-        baseApiUrl = 'https://api-todo-flutter.herokuapp.com/';
+        baseApiUrl = 'https://api-todo-flutter.herokuapp.com';
 
         break;
       }

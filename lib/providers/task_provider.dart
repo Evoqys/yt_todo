@@ -5,6 +5,12 @@ import 'package:yt_todo/models/task_model.dart';
 
 class TaskProvider with ChangeNotifier {
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  set isLoading(bool val) {
+    _isLoading = val;
+    notifyListeners();
+  }
 
   List<Task> _tasks = [];
   List<Task> get tasks => _tasks;
