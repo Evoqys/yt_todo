@@ -21,7 +21,8 @@ class TaskService {
       if (response.statusCode == 200) {
         List<Task> _tasks = [];
         dynamic body = json.decode(response.body);
-        body.forEach((val) {
+        print(body.toString());
+        body['data'].forEach((val) {
           _tasks.add(Task.fromMap(val));
         });
         _taskProvider.tasks = _tasks;
