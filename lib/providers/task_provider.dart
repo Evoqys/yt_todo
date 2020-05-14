@@ -12,6 +12,13 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isAdding = false;
+  bool get isAdding => _isAdding;
+  set isAdding(bool val) {
+    _isAdding = val;
+    notifyListeners();
+  }
+
   List<Task> _tasks = [];
   List<Task> get tasks => _tasks;
   set tasks(List<Task> tasks) {

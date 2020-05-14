@@ -17,7 +17,7 @@ class Task {
   });
 
   Task.fromMap(Map<String, dynamic> map) {
-    this.id = map['id'];
+    this.id = map['_id'];
     this.title = map['title'];
     this.description = map['description'];
     this.status = enumValueFromString<TaskStatus>(map['status'].toString(), TaskStatus.values);

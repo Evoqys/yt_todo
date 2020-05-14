@@ -10,14 +10,14 @@ import 'package:yt_todo/utilities/enum_utilities.dart';
 import 'package:http/http.dart' as http;
 
 class TaskService {
+  String baseTaskApiUrl = AppEnvironment.baseApiUrl + '/tasks';
 
-  String baseApiUrl = AppEnvironment.baseApiUrl;
-
+  TaskProvider _taskProvider = locator<TaskProvider>();
+  var uuid = new Uuid();
   Future fetchTasks() async {
-    String url = baseApiUrl + '/tasks';
     _taskProvider.isLoading = true;
     try {
-      var response = await http.get(url);
+      var response = await http.get(baseTaskApiUrl);
       if (response.statusCode == 200) {
         List<Task> _tasks = [];
         dynamic body = json.decode(response.body);
@@ -36,29 +36,60 @@ class TaskService {
       throw(e);
     }
   }
-
-  TaskProvider _taskProvider = locator<TaskProvider>();
-  var uuid = new Uuid();
-  addTask(Map<String, dynamic> task) {
-    task.addAll({
-      'id': uuid.v1(),
-      'status': enumValueToString(TaskStatus.OPEN) // open
-    });
-    _taskProvider.addTask(Task.fromMap(task));
+  Future addTask(Map<String, dynamic> task) async {
+    _taskProvider.isAdding = true;
+    try {
+      var response = await http.post(baseTaskApiUrl, body: task);
+      if (response.statusCode == 201) {
+        dynamic body = json.decode(response.body);
+        print(body.toString());
+        _taskProvider.addTask(Task.fromMap(body));
+        _taskProvider.isAdding = false;
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+        _taskProvider.isAdding = false;
+      }
+    } catch(e) {
+      _taskProvider.isAdding = false;
+      throw(e);
+    }
   }
 
 
-  updateTask(Task task, Map<String, dynamic> updates) {
-    Map<String, dynamic> map = {
-      'id': task.id,
-      'title': updates['title'] ?? task.title,
-      'description': updates['description'] ?? task.description,
-      'status': enumValueToString(task.status)
-    };
-    _taskProvider.updateTask(Task.fromMap(map));
+  Future updateTask(Task task, Map<String, dynamic> updates) async{
+    _taskProvider.isAdding = true;
+    try {
+      var response = await http.put(baseTaskApiUrl+'/'+task.id, body: updates);
+      if (response.statusCode == 200) {
+        dynamic body = json.decode(response.body);
+        print(body.toString());
+        _taskProvider.updateTask(Task.fromMap(body));
+        _taskProvider.isAdding = false;
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+        _taskProvider.isAdding = false;
+      }
+    } catch(e) {
+      _taskProvider.isAdding = false;
+      throw(e);
+    }
   }
 
-  deleteTask(String id) {
-    _taskProvider.deleteTask(id);
+  Future deleteTask(String id) async {
+    _taskProvider.isAdding = true;
+    print(id);
+    try {
+      var response = await http.delete(baseTaskApiUrl+'/'+id);
+      if (response.statusCode == 200) {
+        _taskProvider.deleteTask(id);
+        _taskProvider.isAdding = false;
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+        _taskProvider.isAdding = false;
+      }
+    } catch(e) {
+      _taskProvider.isAdding = false;
+      throw(e);
+    }
   }
 }
