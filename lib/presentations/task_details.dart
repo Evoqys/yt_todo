@@ -6,7 +6,6 @@ import 'package:yt_todo/locator.dart';
 import 'package:yt_todo/models/task_model.dart';
 import 'package:yt_todo/providers/task_provider.dart';
 import 'package:yt_todo/services/task_service.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:yt_todo/utilities/enum_utilities.dart';
 
 class TaskDetails extends StatefulWidget {
